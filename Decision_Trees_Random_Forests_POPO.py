@@ -14,3 +14,7 @@ df['Interned'] = df['Interned'].map(d)
 d = {'BS': 0, 'MS': 1, 'PhD': 2}
 df['Level of Education'] = df['Level of Education'].map(d)
 df.head()
+
+
+features = list(df.columns[:6])
+print(features)
