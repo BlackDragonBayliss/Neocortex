@@ -1,26 +1,13 @@
 # import numpy as np
 import pandas as pd
-# from sklearn import tree
-
-import csv
+from sklearn import tree
+from IPython.display import Image
+from sklearn.externals.six import StringIO
+from sklearn.ensemble import RandomForestClassifier
+import pydotplus
 
 input_file = "/Users/CommanderCarr/Coding/python/data_science/DataScience-Python/PastHires.csv"
-df = pd.read_csv(input_file, header = 0)
-# print(df.head())
-
-# with open("/Users/CommanderCarr/Coding/python/data_science/DataScience-Python/PastHires.csv") as csv_file:
-#     csv_reader = csv.reader(csv_file, delimiter=',')
-#     line_count = 0
-#     for row in csv_reader:
-#         if line_count == 0:
-#             print(f'Column names are {", ".join(row)}')
-#             line_count += 1
-#         else:
-#             print(f'\t{row[0]} works in the {row[1]} department, and was born in {row[2]}.')
-#             line_count += 1
-#     print(f'Processed {line_count} lines.')
-
-
+df = pd.read_csv(input_file, header=0)
 
 d = {'Y': 1, 'N': 0}
 df['Hired'] = df['Hired'].map(d)
@@ -30,7 +17,25 @@ df['Interned'] = df['Interned'].map(d)
 d = {'BS': 0, 'MS': 1, 'PhD': 2}
 df['Level of Education'] = df['Level of Education'].map(d)
 print(df.head())
-#
-#
-# features = list(df.columns[:6])
-# print(features)
+features = list(df.columns[:6])
+print(features)
+
+y = df["Hired"]
+X = df[features]
+clf = tree.DecisionTreeClassifier()
+clf = clf.fit(X,y)
+
+
+# dot_data = StringIO()
+# tree.export_graphviz(clf, out_file=dot_data,
+#                          feature_names=features)
+# graph = pydotplus.graph_from_dot_data(dot_data.getvalue())
+# Image(graph.create_png())
+
+clf = RandomForestClassifier(n_estimators=10)
+clf = clf.fit(X, y)
+
+#Predict employment of an employed 10-year veteran
+print (clf.predict([[10, 1, 4, 0, 0, 0]]))
+#...and an unemployed 10-year veteran
+print (clf.predict([[10, 0, 4, 0, 0, 0]]))
