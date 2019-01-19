@@ -36,3 +36,13 @@ data = DataFrame({'message': [], 'class': []})
 
 data = data.append(dataFrameFromDirectory('/Users/CommanderCarr/Coding/python/data_science/emails/spam', 'spam'))
 data = data.append(dataFrameFromDirectory('/Users/CommanderCarr/Coding/python/data_science/emails/ham', 'ham'))
+
+print(data.head())
+
+
+vectorizer = CountVectorizer()
+counts = vectorizer.fit_transform(data['message'].values)
+
+classifier = MultinomialNB()
+targets = data['class'].values
+classifier.fit(counts, targets)
