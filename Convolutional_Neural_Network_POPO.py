@@ -69,3 +69,8 @@ history = model.fit(train_images, train_labels,
                     epochs=10,
                     verbose=2,
                     validation_data=(test_images, test_labels))
+
+# Add scoring and accuracy
+score = model.evaluate(test_images, test_labels, verbose=0)
+print('Test loss:', score[0])
+print('Test accuracy:', score[1])
