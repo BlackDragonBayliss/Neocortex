@@ -36,3 +36,36 @@ def display_sample(num):
     plt.title('Sample: %d  Label: %d' % (num, label))
     plt.imshow(image, cmap=plt.get_cmap('gray_r'))
     plt.show()
+
+
+model = Sequential()
+model.add(Conv2D(32, kernel_size=(3, 3),
+                 activation='relu',
+                 input_shape=input_shape))
+# 64 3x3 kernels
+model.add(Conv2D(64, (3, 3), activation='relu'))
+# Reduce by taking the max of each 2x2 block
+model.add(MaxPooling2D(pool_size=(2, 2)))
+# Dropout to avoid overfitting
+model.add(Dropout(0.25))
+# Flatten the results to one dimension for passing into our final layer
+model.add(Flatten())
+# A hidden layer to learn with
+model.add(Dense(128, activation='relu'))
+# Another dropout
+model.add(Dropout(0.5))
+# Final categorization from 0-9 with softmax
+model.add(Dense(10, activation='softmax'))
+
+
+model.compile(loss='categorical_crossentropy',
+              optimizer='adam',
+              metrics=['accuracy'])
+
+
+# Train model, batches of 32.
+history = model.fit(train_images, train_labels,
+                    batch_size=32,
+                    epochs=10,
+                    verbose=2,
+                    validation_data=(test_images, test_labels))
