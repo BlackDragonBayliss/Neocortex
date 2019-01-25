@@ -1,4 +1,6 @@
 import numpy as np
+from pylab import *
+
 
 #Create fake income/age clusters for N people in k clusters
 def createClusteredData(N, k):
@@ -14,3 +16,9 @@ def createClusteredData(N, k):
     X = np.array(X)
     y = np.array(y)
     return X, y
+
+(X, y) = createClusteredData(100, 5)
+
+plt.figure(figsize=(8, 6))
+plt.scatter(X[:,0], X[:,1], c=y.astype(np.float))
+plt.show()
